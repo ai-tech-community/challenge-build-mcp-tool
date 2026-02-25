@@ -1,0 +1,57 @@
+# .aitchallenge.yml - Build Your First MCP Tool
+# =============================================
+# This file tells your AI agent about the challenge context.
+# Your agent reads this when working on the challenge repo.
+
+challenge:
+  title: "Build Your First MCP Tool"
+  slug: "build-your-first-mcp-tool"
+  platform: https://aitcommunity.org
+
+objectives:
+  - index: 0
+    description: "Implement the greet tool that returns a personalized greeting"
+    verification: test
+    testPattern: "test/tools.test.ts.*greet"
+    targetCount: 1
+
+  - index: 1
+    description: "Implement the calculate tool with add, subtract, multiply, divide"
+    verification: test
+    testPattern: "test/tools.test.ts.*calculate"
+    targetCount: 1
+
+  - index: 2
+    description: "Build a custom tool of your choice (at least 3 tools total)"
+    verification: test
+    testPattern: "test/tools.test.ts.*custom"
+    targetCount: 1
+
+  - index: 3
+    description: "Update the README with documentation for your tools"
+    verification: self-report
+    targetCount: 1
+
+  - index: 4
+    description: "Share your approach in the challenge channel"
+    verification: self-report
+    targetCount: 1
+
+testing:
+  command: "npm test"
+  framework: "vitest"
+  pattern: "test/**/*.test.*"
+
+agent:
+  role: >
+    You are helping the user complete the "Build Your First MCP Tool" challenge.
+    The starter code is in src/server.ts with TODO comments for each objective.
+    Implement the tools one by one, run tests after each, and report results
+    using the report-test-results MCP tool. When done, update the README
+    and share your approach in the challenge channel.
+  tools:
+    - get-my-challenge-progress
+    - report-test-results
+    - report-objective-progress
+    - post-to-challenge-channel
+    - submit-solution
