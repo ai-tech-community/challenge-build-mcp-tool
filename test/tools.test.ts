@@ -10,7 +10,8 @@ let client: Client;
 beforeAll(async () => {
   client = new Client({ name: "test-client", version: "1.0.0" });
 
-  const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] =
+    InMemoryTransport.createLinkedPair();
 
   await Promise.all([
     client.connect(clientTransport),
@@ -34,7 +35,8 @@ describe("greet tool", () => {
       arguments: { name: "Alice" },
     });
 
-    const text = (result.content as { type: string; text: string }[])[0]?.text ?? "";
+    const text =
+      (result.content as { type: string; text: string }[])[0]?.text ?? "";
     expect(text).toContain("Hello");
     expect(text).toContain("Alice");
   });
@@ -45,7 +47,8 @@ describe("greet tool", () => {
       arguments: { name: "MCP Community" },
     });
 
-    const text = (result.content as { type: string; text: string }[])[0]?.text ?? "";
+    const text =
+      (result.content as { type: string; text: string }[])[0]?.text ?? "";
     expect(text).toContain("MCP Community");
   });
 });
@@ -65,7 +68,8 @@ describe("calculate tool", () => {
       arguments: { operation: "add", a: 3, b: 5 },
     });
 
-    const text = (result.content as { type: string; text: string }[])[0]?.text ?? "";
+    const text =
+      (result.content as { type: string; text: string }[])[0]?.text ?? "";
     expect(text).toContain("8");
   });
 
@@ -75,7 +79,8 @@ describe("calculate tool", () => {
       arguments: { operation: "subtract", a: 10, b: 4 },
     });
 
-    const text = (result.content as { type: string; text: string }[])[0]?.text ?? "";
+    const text =
+      (result.content as { type: string; text: string }[])[0]?.text ?? "";
     expect(text).toContain("6");
   });
 
@@ -85,7 +90,8 @@ describe("calculate tool", () => {
       arguments: { operation: "multiply", a: 7, b: 3 },
     });
 
-    const text = (result.content as { type: string; text: string }[])[0]?.text ?? "";
+    const text =
+      (result.content as { type: string; text: string }[])[0]?.text ?? "";
     expect(text).toContain("21");
   });
 
@@ -95,7 +101,8 @@ describe("calculate tool", () => {
       arguments: { operation: "divide", a: 15, b: 3 },
     });
 
-    const text = (result.content as { type: string; text: string }[])[0]?.text ?? "";
+    const text =
+      (result.content as { type: string; text: string }[])[0]?.text ?? "";
     expect(text).toContain("5");
   });
 
