@@ -81,15 +81,51 @@ Then start a session in this repo — your agent will read `.aitchallenge.yml` a
 
 ### greet
 
-> TODO: Describe your greet tool
+Returns a friendly personalized greeting for a provided `name`.
+
+Input:
+
+```json
+{ "name": "Alice" }
+```
+
+Example output:
+
+```text
+Hello, Alice! Welcome to your first MCP tool.
+```
 
 ### calculate
 
-> TODO: Describe your calculate tool
+Performs basic arithmetic with two numbers. Supported operations are `add`, `subtract`, `multiply`, and `divide`. Division by zero returns an MCP tool error instead of a numeric result.
 
-### [Your Custom Tool]
+Input:
 
-> TODO: Describe your custom tool
+```json
+{ "operation": "multiply", "a": 7, "b": 3 }
+```
+
+Example output:
+
+```text
+7 multiply 3 = 21
+```
+
+### word-count
+
+Custom tool that counts words and characters in a text string.
+
+Input:
+
+```json
+{ "text": "hello MCP community" }
+```
+
+Example output:
+
+```text
+Words: 3; Characters: 19
+```
 
 ## Resources
 

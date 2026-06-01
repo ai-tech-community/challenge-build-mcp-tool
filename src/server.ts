@@ -1,8 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-
-// You can import zod for tool input schemas:
-// import { z } from "zod";
+import { z } from "zod";
 
 // ─── Create your MCP server ─────────────────────────────────────────────────
 const server = new McpServer({
@@ -17,8 +15,21 @@ const server = new McpServer({
 //   - Input: { name: string }
 //   - Output text contains: "Hello, {name}"
 //
-// TODO: Register the "greet" tool here
-// Hint: Use server.tool("greet", { ... }, async ({ name }) => { ... })
+server.tool(
+  "greet",
+  "Return a friendly personalized greeting.",
+  {
+    name: z.string().min(1).describe("Name of the person or group to greet"),
+  },
+  async ({ name }) => ({
+    content: [
+      {
+        type: "text",
+        text: `Hello, ${name}! Welcome to your first MCP tool.`,
+      },
+    ],
+  }),
+);
 
 // ─── Objective 2: Implement the "calculate" tool ────────────────────────────
 // This tool performs basic arithmetic.
@@ -28,7 +39,43 @@ const server = new McpServer({
 //   - Output text contains the numeric result
 //   - Division by zero returns an error (isError: true)
 //
-// TODO: Register the "calculate" tool here
+server.tool(
+  "calculate",
+  "Perform basic arithmetic on two numbers.",
+  {
+    operation: z
+      .enum(["add", "subtract", "multiply", "divide"])
+      .describe("Arithmetic operation to perform"),
+    a: z.number().describe("First number"),
+    b: z.number().describe("Second number"),
+  },
+  async ({ operation, a, b }) => {
+    if (operation === "divide" && b === 0) {
+      return {
+        isError: true,
+        content: [{ type: "text", text: "Cannot divide by zero." }],
+      };
+    }
+
+    const result =
+      operation === "add"
+        ? a + b
+        : operation === "subtract"
+          ? a - b
+          : operation === "multiply"
+            ? a * b
+            : a / b;
+
+    return {
+      content: [
+        {
+          type: "text",
+          text: `${a} ${operation} ${b} = ${result}`,
+        },
+      ],
+    };
+  },
+);
 
 // ─── Objective 3: Build your own custom tool ────────────────────────────────
 // Create any tool you want! Be creative.
@@ -40,7 +87,27 @@ const server = new McpServer({
 //   - A "word-count" tool that counts words in text
 //   - A "base64" tool that encodes/decodes strings
 //
-// TODO: Register your custom tool here
+server.tool(
+  "word-count",
+  "Count words and characters in a text string.",
+  {
+    text: z.string().describe("Text to analyze"),
+  },
+  async ({ text }) => {
+    const trimmed = text.trim();
+    const words = trimmed ? trimmed.split(/\s+/).length : 0;
+    const characters = text.length;
+
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Words: ${words}; Characters: ${characters}`,
+        },
+      ],
+    };
+  },
+);
 
 // ─── Start the server ───────────────────────────────────────────────────────
 async function main() {
